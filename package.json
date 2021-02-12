@@ -4,7 +4,7 @@
   "description": "A simple e-book sales app built on Node.js with Stripe API - deployed on Heroku",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",

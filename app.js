@@ -1,7 +1,6 @@
 const express = require("express");
-const stripe = require("stripe")(
-  "sk_test_51IJhe1LceJNHiQkwlL9SKBknml74SfLBdgCrJBHdHJSfIWPiBLKUIYMcpEabfESd9NxruKkKEDIoTmeSqo17cRIM0054Nq660D"
-);
+const keys = require("./config/keys");
+const stripe = require("stripe")(keys.stripeSecretkey);
 const bodyParser = require("body-parser");
 const exphbs = require("express-handlebars");
 
@@ -20,7 +19,9 @@ app.use(express.static(`${__dirname}/public`));
 
 // Index Route
 app.get("/", (req, res) => {
-  res.render("index");
+  res.render("index", {
+    stripePublishablekey: keys.stripePublishablekey,
+  });
 });
 
 // Charge Route

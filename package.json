@@ -1,0 +1,29 @@
+{
+  "name": "ebook-sales-app",
+  "version": "1.0.0",
+  "description": "A simple e-book sales app built on Node.js with Stripe API - deployed on Heroku",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SaeedRafay/ebook-sales-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SaeedRafay/ebook-sales-app/issues"
+  },
+  "homepage": "https://github.com/SaeedRafay/ebook-sales-app#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "express-handlebars": "^5.2.0",
+    "stripe": "^8.135.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}

@@ -2,24 +2,48 @@
     <div class="row">
         <div class="col-md-6 text-center">
             <h1 class="display-3 mt-3 pt-5">
-                Web Development Ebook
+                HackYourFuture Curriculum
             </h1>
             <p class="lead">
-                Learn web development front to back
+                Become a full-stack web developer in 7-month
             </p>
-            <form action="/charge" method="post">
+            <!-- <form action="/charge" method="post">
                 <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                    data-key="{{stripePublishableKey}}"
-                    data-amount="2500" data-name="Web Development Ebook"
-                    data-description="Ebook written by Brad Traversy" data-image="/img/marketplace.png"
-                    data-locale="auto">
+                    data-key="{{stripePublishableKey}}" data-amount="2500" data-name="HackYourFuture Curriculum"
+                    data-description="Bootcamp Curriculum by HYF" data-image="/img/marketplace.png" data-locale="auto">
                     </script>
                 <script>
                     // Hide default stripe button
                     document.getElementsByClassName('stripe-button-el')[0].style.display = 'none';
                 </script>
-                <button type="submit" class="btn btn-outline-dark text-white btn-lg">Purchase For $25</button>
-            </form>
+                <button type="submit" class="btn btn-outline-dark text-white btn-lg">Purchase For €25</button>
+            </form> -->
+            <script src="https://js.stripe.com/v3"></script>
+            <button type="submit" id="checkout-button" class="btn btn-outline-dark text-white btn-lg">Purchase For
+                €25</button>
+            <script type="text/javascript">
+                var stripe = Stripe(`{{stripePublishableKey}}`);
+                var checkoutButton = document.getElementById("checkout-button");
+                checkoutButton.addEventListener("click", function () {
+                    fetch("/charge", {
+                        method: "POST",
+                    })
+                        .then(function (response) {
+                            return response.json();
+                        })
+                        .then(function (session) {
+                            return stripe.redirectToCheckout({ sessionId: session.id });
+                        })
+                        .then(function (result) {
+                            if (result.error) {
+                                alert(result.error.message);
+                            }
+                        })
+                        .catch(function (error) {
+                            console.error("Error:", error);
+                        });
+                });
+            </script>
         </div>
         <div class="col-md-6">
             <img src="/img/book.png" alt="" class="img-fluid">

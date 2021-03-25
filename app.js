@@ -4,6 +4,8 @@ const stripe = require("stripe")(keys.stripeSecretKey);
 const bodyParser = require("body-parser");
 const exphbs = require("express-handlebars");
 
+const port = process.env.PORT || 5000;
+
 const app = express();
 
 // Handlebars Middleware
@@ -25,26 +27,36 @@ app.get("/", (req, res) => {
 });
 
 // Charge Route
-app.post("/charge", (req, res) => {
-  const amount = 2500;
+app.post("/charge", async (req, res) => {
+  const app_url = process.env.APP_URL || `http://localhost:${port}/`;
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ["card"],
+    line_items: [
+      {
+        price_data: {
+          currency: "eur",
+          product_data: {
+            name: "HackYourFuture Curriculum",
+            images: [
+              "https://avatars.githubusercontent.com/u/20858568?s=200&v=4",
+            ],
+          },
+          unit_amount: 2500,
+        },
+        quantity: 1,
+      },
+    ],
+    mode: "payment",
+    success_url: `${app_url}success`,
+    cancel_url: `${app_url}`,
+  });
 
-  stripe.customers
-    .create({
-      email: req.body.stripeEmail,
-      source: req.body.stripeToken,
-    })
-    .then((customer) =>
-      stripe.charges.create({
-        amount,
-        description: "Web Development Ebook",
-        currency: "usd",
-        customer: customer.id,
-      })
-    )
-    .then((charge) => res.render("success"));
+  res.json({ id: session.id });
 });
 
-const port = process.env.PORT || 5000;
+app.get("/success", (req, res) => {
+  res.render("success");
+});
 
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);

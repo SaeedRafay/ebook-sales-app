@@ -28,7 +28,7 @@ app.get("/", (req, res) => {
 
 // Charge Route
 app.post("/charge", async (req, res) => {
-  // const app_url = process.env.APP_URL || `http://localhost:${port}/`;
+  const app_url = process.env.APP_URL || `http://localhost:${port}/`;
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
     line_items: [
